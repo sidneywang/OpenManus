@@ -9,7 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "electron:dev": "concurrently \"npm run dev\" \"NODE_ENV=development electron .\"",
-    "electron:build": "electron-builder"
+    "build:python": "python ../build.py",
+    "electron:build": "npm run build:python && electron-builder",
+    "postinstall": "pip install pyinstaller"
   },
   "author": "",
   "license": "MIT",
@@ -23,9 +25,31 @@
   "dependencies": {
     "antd": "^5.12.0",
     "axios": "^1.9.0",
+    "python-shell": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reactflow": "^11.7.0",
     "zustand": "^4.3.8"
+  },
+  "build": {
+    "appId": "com.openmanus.app",
+    "productName": "OpenManus",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/python/run_flow",
+        "to": "python/run_flow"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    }
   }
 }

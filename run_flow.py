@@ -1,18 +1,20 @@
 import asyncio
 import time
+import sys
 
 from app.agent.manus import Manus
 from app.flow.flow_factory import FlowFactory, FlowType
 from app.logger import logger
 
 
-async def run_flow():
+async def run_flow(prompt=None):
     agents = {
         "manus": Manus(),
     }
 
     try:
-        prompt = input("Enter your prompt: ")
+        if not prompt:
+            prompt = input("Enter your prompt: ")
 
         if prompt.strip().isspace() or not prompt:
             logger.warning("Empty prompt provided.")
@@ -33,6 +35,7 @@ async def run_flow():
             elapsed_time = time.time() - start_time
             logger.info(f"Request processed in {elapsed_time:.2f} seconds")
             logger.info(result)
+            return result
         except asyncio.TimeoutError:
             logger.error("Request processing timed out after 1 hour")
             logger.info(
@@ -46,4 +49,5 @@ async def run_flow():
 
 
 if __name__ == "__main__":
-    asyncio.run(run_flow())
+    prompt = sys.argv[1] if len(sys.argv) > 1 else None
+    asyncio.run(run_flow(prompt))
