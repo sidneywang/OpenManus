@@ -5,6 +5,7 @@ import { Layout, Typography, Button, Space } from 'antd';
 import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import ThoughtFlow from './components/ThoughtFlow.jsx';
 import ConfigDialog from './components/ConfigDialog.jsx';
+import PromptInput from './components/PromptInput.jsx';
 import useStore from './store/useStore';
 import { openmanusApi } from './api/openmanusApi';
 import 'antd/dist/reset.css';
@@ -85,9 +86,12 @@ function App() {
             borderRadius: '8px',
             marginBottom: '24px'
           }}>
-            <Typography.Text type={isConnected ? 'success' : 'danger'}>
-              状态: {isConnected ? '已连接' : '未连接'}
-            </Typography.Text>
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <Typography.Text type={isConnected ? 'success' : 'danger'}>
+                状态: {isConnected ? '已连接' : '未连接'}
+              </Typography.Text>
+              <PromptInput />
+            </Space>
           </div>
           <ThoughtFlow />
         </Content>
