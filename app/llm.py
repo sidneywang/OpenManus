@@ -213,6 +213,9 @@ class LLM:
                 # If the model is not in tiktoken's presets, use cl100k_base as default
                 self.tokenizer = tiktoken.get_encoding("cl100k_base")
 
+            # Initialize token counter
+            self.token_counter = TokenCounter(self.tokenizer)
+
             if self.api_type == "azure":
                 self.client = AsyncAzureOpenAI(
                     base_url=self.base_url,
@@ -223,8 +226,6 @@ class LLM:
                 self.client = BedrockClient()
             else:
                 self.client = AsyncOpenAI(api_key=self.api_key, base_url=self.base_url)
-
-            self.token_counter = TokenCounter(self.tokenizer)
 
     def count_tokens(self, text: str) -> int:
         """Calculate the number of tokens in a text"""
