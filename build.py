@@ -22,6 +22,10 @@ def build():
     import nltk
     nltk_data_path = os.path.expanduser("~/nltk_data")
 
+    # 获取 tiktoken_ext 路径
+    import tiktoken_ext
+    tiktoken_ext_path = tiktoken_ext.__path__[0]
+
     # 构建命令
     cmd = [
         "pyinstaller",
@@ -29,6 +33,7 @@ def build():
         "--onefile",
         "--clean",
         "--add-data", f"{nltk_data_path}:nltk_data",
+        "--add-data", f"{tiktoken_ext_path}:tiktoken_ext",
         "--hidden-import", "nltk",
         "--hidden-import", "nltk.collocations",
         "--hidden-import", "nltk.metrics",
@@ -42,6 +47,8 @@ def build():
         "--hidden-import", "tiktoken.core",
         "--hidden-import", "tiktoken.registry",
         "--hidden-import", "tiktoken.model",
+        "--hidden-import", "tiktoken.model.cl100k_base",
+        # "--hidden-import", "tiktoken-ext",
         "run_flow.py"
     ]
 
