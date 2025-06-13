@@ -6,6 +6,7 @@ import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import ThoughtFlow from './components/ThoughtFlow.jsx';
 import ConfigDialog from './components/ConfigDialog.jsx';
 import PromptInput from './components/PromptInput.jsx';
+import LogDisplay from './components/LogDisplay.jsx';
 import useStore from './store/useStore';
 import { openmanusApi } from './api/openmanusApi';
 import 'antd/dist/reset.css';
@@ -93,6 +94,7 @@ function App() {
               <PromptInput />
             </Space>
           </div>
+          <LogDisplay />
           <ThoughtFlow />
         </Content>
         <ConfigDialog

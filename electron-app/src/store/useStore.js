@@ -144,7 +144,18 @@ const useStore = create((set, get) => ({
   closeDetailDialog: () => set({
     isDetailDialogOpen: false,
     selectedThought: null
-  })
+  }),
+
+  // 日志状态
+  logs: [],
+  addLog: (message, type = 'info') => set((state) => ({
+    logs: [...state.logs, {
+      message,
+      type,
+      timestamp: new Date().toISOString()
+    }]
+  })),
+  clearLogs: () => set({ logs: [] })
 }));
 
 export default useStore;

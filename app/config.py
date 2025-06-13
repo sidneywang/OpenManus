@@ -3,6 +3,8 @@ import threading
 import tomllib
 from pathlib import Path
 from typing import Dict, List, Optional
+import os
+import sys
 
 from pydantic import BaseModel, Field
 
@@ -183,20 +185,25 @@ class Config:
                     self._load_initial_config()
                     self._initialized = True
 
-    @staticmethod
-    def _get_config_path() -> Path:
-        root = PROJECT_ROOT
-        config_path = root / "config" / "config.toml"
-        if config_path.exists():
+    def _get_config_path(self):
+        # 兼容 PyInstaller 打包后的路径
+        if hasattr(sys, '_MEIPASS'):
+            pyinstaller_config_path = os.path.join(sys._MEIPASS, 'config', 'config.toml')
+            if os.path.exists(pyinstaller_config_path):
+                return pyinstaller_config_path
+            # 如果在 _MEIPASS 中找不到，尝试在 dist 目录中查找
+            dist_config_path = os.path.join(os.path.dirname(sys.executable), 'config', 'config.toml')
+            if os.path.exists(dist_config_path):
+                return dist_config_path
+        # 原有逻辑
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'config.toml')
+        if os.path.exists(config_path):
             return config_path
-        example_path = root / "config" / "config.example.toml"
-        if example_path.exists():
-            return example_path
         raise FileNotFoundError("No configuration file found in config directory")
 
     def _load_config(self) -> dict:
         config_path = self._get_config_path()
-        with config_path.open("rb") as f:
+        with open(config_path, "rb") as f:
             return tomllib.load(f)
 
     def _load_initial_config(self):
