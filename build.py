@@ -38,6 +38,10 @@ def build():
         "--hidden-import", "scipy.spatial",
         "--hidden-import", "scipy.spatial.transform",
         "--hidden-import", "scipy.spatial.transform._rotation",
+        "--hidden-import", "tiktoken",
+        "--hidden-import", "tiktoken.core",
+        "--hidden-import", "tiktoken.registry",
+        "--hidden-import", "tiktoken.model",
         "run_flow.py"
     ]
 
@@ -55,6 +59,11 @@ def build():
     config_dir = target_dir / "config"
     config_dir.mkdir(exist_ok=True)
     shutil.copy("config/config.toml", config_dir / "config.toml")
+
+    # 为 dist 目录也创建配置文件
+    dist_config_dir = Path("dist/config")
+    dist_config_dir.mkdir(exist_ok=True)
+    shutil.copy("config/config.toml", dist_config_dir / "config.toml")
 
     print("Python 打包完成！")
 
